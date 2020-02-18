@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EVOA - Kennisgevingsdossiers
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.3
 // @description  Kennisgevingsdossier specific actions
 // @author       Yentl Storms
 // @match        https://localhost:9000/*
@@ -9,9 +9,9 @@
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require      http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/util.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/sidebar.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/kennisgevingen/dossier.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/util.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/sidebar.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/kennisgevingen/dossier.js
 // ==/UserScript==
 
 /* globals waitForKeyElements */

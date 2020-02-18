@@ -31,10 +31,10 @@ function markAsCorrectVerricht() {
 
 function fillInDossier(save = true) {
     console.log('Filling in dossier...');
-    fillInVak1(save)
+    // Saving Vak4 triggers changes in Vak3, possibly resulting in concurrency issues when saved concurrently => move them apart to reduce risk (hacky '=.=)
+    fillInVak4(save)
+            .then(() => fillInVak1(save))
             .then(() => fillInVak2(save))
-            .then(() => fillInVak3(save))
-            .then(() => fillInVak4(save))
             .then(() => fillInVak5(save))
             .then(() => fillInVak6(save))
             .then(() => fillInVak7(save))
@@ -46,7 +46,8 @@ function fillInDossier(save = true) {
             .then(() => fillInVak13(save))
             .then(() => fillInVak14(save))
             .then(() => fillInVak15(save))
-            .then(() => fillInVak16(save));
+            .then(() => fillInVak16(save))
+            .then(() => fillInVak3(save));
     console.log('Dossier filled in.');
 }
 
