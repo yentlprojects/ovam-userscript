@@ -103,11 +103,6 @@ async function fillInVak1(save = true) {
     }
 }
 
-function addMockAttachment(inputElement) {
-    inputElement.files = createMockDataTransfer().files;
-    inputElement.dispatchEvent(new Event('change', { bubbles: true }));
-}
-
 async function fillInVak2(save = true) {
     const vak = await waitForElementOnceById(vakken[2].id);
 
