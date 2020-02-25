@@ -12,14 +12,17 @@
 
 const dossierActions = [
     {
+        id: 'dossier-correct-verricht',
         name: 'Correct Verricht',
         execute: markAsCorrectVerricht
     },
     {
+        id: 'dossier-vul-in',
         name: 'Vul Dossier In',
         execute: () => fillInDossier(false)
     },
     {
+        id: 'dossier-vul-in-save',
         name: 'Vul Dossier In (Save)',
         execute: fillInDossier
     }

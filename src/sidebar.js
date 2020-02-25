@@ -2,7 +2,7 @@
 /* globals shortcut */
 /* globals waitForElementsOnce */
 
-function initSidebar(addToSelector = '.view-routes > *:first()') {
+function initSidebar() {
     const sidebar = $('<div id="evoa-util-sidebar"/>').css({
         "display": "none",
         "flex-direction": "column",
@@ -10,19 +10,19 @@ function initSidebar(addToSelector = '.view-routes > *:first()') {
         "top": "75%",
         "transform": "translateY(-50%)",
         "right": "0",
-        "width": "200px",
+        "min-width": "10px",
+        "min-height": "40px",
         "padding": "5px",
         "background-color": "rgba(0, 0, 0, 0.5)",
         "z-index": "50000"
     });
-    // Add it to first child of the actual content of page, so the sidebar gets deleted when navigating (and rebuilt by pages that have one)
-    waitForElementsOnce(addToSelector). then(el => el.append(sidebar));
     createKeyboardShortcutHandler(sidebar);
     return sidebar;
 }
 
-function createSidebarButton(text, onClick) {
+function createSidebarButton(id, text, onClick) {
     return $('<button/>', {
+        id: id,
         text: text,
         class: 'vl-button vl-button--narrow',
         style: 'margin: 5px',
