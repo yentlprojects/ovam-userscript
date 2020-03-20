@@ -29,7 +29,9 @@ const dossierActions = [
 ];
 
 function markAsCorrectVerricht() {
-    $('[id=correct-verklaren-pill]').has('input:not(:checked)').click();
+    $('[id=correct-verklaren-pill]').has('input:not(:checked)').click(function (e) {
+        return false;
+    });
 }
 
 function fillInDossier(save = true) {
@@ -100,6 +102,7 @@ async function fillInVak1(save = true) {
 
     // Set attachment
     addMockAttachment(vak.find('input#vak1ContractDocumentenUpload').get(0));
+    addMockAttachment(vak.find('input#vak1WaarborgDocumentenUpload').get(0));
 
     if (save) {
         vak.find('button[type="submit"]').click();
