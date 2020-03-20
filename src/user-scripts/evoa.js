@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         EVOA
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.9
 // @description  Kennisgevingsdossier specific actions
 // @author       Yentl Storms
+// @match        https://*.evoa.ovam.be/*
 // @match        https://localhost:9000/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-3.4.1.min.js

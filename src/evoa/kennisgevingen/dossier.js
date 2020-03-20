@@ -29,9 +29,7 @@ const dossierActions = [
 ];
 
 function markAsCorrectVerricht() {
-    $('[id=correct-verklaren-pill]').has('input:not(:checked)').click(function (e) {
-        return false;
-    });
+    $('[id=correct-verklaren-pill]').has('input:not(:checked)').click();
 }
 
 function fillInDossier(save = true) {
