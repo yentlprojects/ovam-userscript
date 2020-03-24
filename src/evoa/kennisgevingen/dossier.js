@@ -172,8 +172,8 @@ async function fillInVak5(save = true) {
 async function fillInVak6(save = true) {
     const vak = await waitForElementOnceById(vakken[6].id);
 
-    setNativeInputValue(vak.find('input#eersteVertrek').get(0), getDateFormattedForInput());
-    setNativeInputValue(vak.find('input#laatsteVertrek').get(0), getDateFormattedForInput());
+    setNativeInputValue(vak.find('input#eersteVertrek').get(0), getDateFormattedForInput(new Date()));
+    setNativeInputValue(vak.find('input#laatsteVertrek').get(0), getDateFormattedForInput(new Date(), 180));
 
     if (save) {
         vak.find('button[type="submit"]').click();

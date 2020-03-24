@@ -31,9 +31,9 @@ function addMockAttachment(inputElement) {
     inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
-function getDateFormattedForInput() {
-    const d = new Date();
-    return ("0" + d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2) + "." + d.getFullYear();
+function getDateFormattedForInput(date, offsetDays = 0) {
+    date.setDate(date.getDate() + offsetDays);
+    return ("0" + date.getDate()).slice(-2) + "." + ("0"+(date.getMonth()+1)).slice(-2) + "." + date.getFullYear();
 }
 
 /**
