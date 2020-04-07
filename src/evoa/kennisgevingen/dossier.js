@@ -341,18 +341,18 @@ async function fillInVak15(save = true) {
 
     // Select Uitvoerland (if none present)
     if (!vak.find('table td:contains("Uitvoer")').length) {
-        vak.find('button:contains("Land toevoegen")').click();
+        vak.find('button:contains("Uitvoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'NL' : 'BE');
         setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
-        vak.find('button:contains("Toevoegen")').click();
+        vak.find('button:contains("Opslaan")').click();
     }
 
     // Select Invoerland (if none present)
     if (!vak.find('table td:contains("Invoer")').length) {
-        vak.find('button:contains("Land toevoegen")').click();
+        vak.find('button:contains("Invoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'BE' : 'NL');
         setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
-        vak.find('button:contains("Toevoegen")').click();
+        vak.find('button:contains("Opslaan")').click();
     }
 
     // Set attachment
