@@ -54,23 +54,51 @@ function fillInDossier(save = true) {
     console.log('Dossier filled in.');
 }
 
+function registerVakAddons() {
+    for (let vak of Object.values(vakken).filter(vak => !!vak.action)) {
+        waitForElementOnceById(vak.id).then(vakNode => vakNode.append(createVakAddonButton(vak)));
+    }
+}
+
+function createVakAddonButton({id, action}) {
+    const button = $('<button/>', {
+        id: `${id}-vak-action`,
+        text: '< Vul vak in',
+        class: 'vl-button vl-button--narrow',
+        click: action,
+    });
+    button.css({
+        "position": "absolute",
+        "overflow": "hidden",
+        "top": 0,
+        "right": 0,
+        "width": "25px"
+    });
+    button.hover(function() {
+        $(this).animate({width: "125px"}, 200);
+    }, function() {
+        $(this).animate({width: "25px"}, 200);
+    });
+    return button;
+}
+
 const vakken = {
-    1: { id: 'vak-1-exporteur' },
-    2: { id: 'vak-2-importeur' },
-    3: { id: 'vak-3-type-aanvraag' },
-    4: { id: 'vak-4-aantal-overbrengingen' },
-    5: { id: 'vak-5-hoeveelheid' },
-    6: { id: 'vak-6-overbrengingperiode' },
-    7: { id: 'vak-7-verpakkings-wijze' },
-    8: { id: 'vak-8-geplande-vervoerders' },
-    9: { id: 'vak-9-producenten-afvalstoffen' },
-    10: { id: 'vak-10-inrichting' },
-    11: { id: 'vak-11-handelingen' },
-    12: { id: 'vak-12-benaming-materiaal' },
-    13: { id: 'vak-13-fysische-eigenschappen' },
-    14: { id: 'vak-14-identificatie-afvalstoffen' },
-    15: { id: 'vak-15-betrokken-landen' },
-    16: { id: 'vak-16-douanekantoren' }
+    1: {id: 'vak-1-exporteur', action: fillInVak1},
+    2: {id: 'vak-2-importeur', action: fillInVak2},
+    3: {id: 'vak-3-type-aanvraag', action: fillInVak3},
+    4: {id: 'vak-4-aantal-overbrengingen', action: fillInVak4},
+    5: {id: 'vak-5-hoeveelheid', action: fillInVak5},
+    6: {id: 'vak-6-overbrengingperiode', action: fillInVak6},
+    7: {id: 'vak-7-verpakkings-wijze', action: fillInVak7},
+    8: {id: 'vak-8-geplande-vervoerders', action: fillInVak8},
+    9: {id: 'vak-9-producenten-afvalstoffen', action: fillInVak9},
+    10: {id: 'vak-10-inrichting', action: fillInVak10},
+    11: {id: 'vak-11-handelingen', action: fillInVak11},
+    12: {id: 'vak-12-benaming-materiaal', action: fillInVak12},
+    13: {id: 'vak-13-fysische-eigenschappen', action: fillInVak13},
+    14: {id: 'vak-14-identificatie-afvalstoffen', action: fillInVak14},
+    15: {id: 'vak-15-betrokken-landen', action: null}, // TODO: re-enable when logic works
+    16: {id: 'vak-16-douanekantoren', action: fillInVak16}
 };
 
 async function fillInVak1(save = true) {

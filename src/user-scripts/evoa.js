@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EVOA
 // @namespace    http://tampermonkey.net/
-// @version      0.13
+// @version      0.15
 // @description  Kennisgevingsdossier specific actions
 // @author       Yentl Storms
 // @match        https://*.evoa.ovam.be/*
@@ -18,7 +18,7 @@
 /* globals $ */
 /* globals waitForKeyElements */
 /* globals initSidebar, createSidebarButton */
-/* globals dossierActions */
+/* globals dossierActions, registerVakAddons */
 
 (function() {
     'use strict';
@@ -37,6 +37,7 @@
         switch (true) {
             case /\/kennisgevingen\/.+?\/dossier/.test(location.pathname):
                 actions = dossierActions;
+                registerVakAddons();
                 break;
             default:
                 actions = [];
