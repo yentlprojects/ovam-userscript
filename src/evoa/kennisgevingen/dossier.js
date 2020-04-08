@@ -68,16 +68,17 @@ function createVakAddonButton({id, action}) {
         click: action,
     });
     button.css({
+        "display": "none",
         "position": "absolute",
         "overflow": "hidden",
         "top": 0,
         "right": 0,
-        "width": "25px"
+        "width": "22px"
     });
     button.hover(function() {
         $(this).animate({width: "125px"}, 200);
     }, function() {
-        $(this).animate({width: "25px"}, 200);
+        $(this).animate({width: "22px"}, 200);
     });
     return button;
 }

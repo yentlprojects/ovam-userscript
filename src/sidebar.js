@@ -32,7 +32,21 @@ function createSidebarButton(id, text, onClick) {
 
 function createKeyboardShortcutHandler(sidebar) {
     shortcut.add('Ctrl+Shift+U', function() {
-        const sidebarIsHidden = sidebar.css('display') === 'none';
-        sidebar.css({"display": sidebarIsHidden ? 'flex' : 'none'});
+        toggleSidebar(sidebar);
+        toggleVakAddons();
     });
+}
+
+function toggleSidebar(sidebar) {
+    const sidebarIsHidden = sidebar.css('display') === 'none';
+    sidebar.css({"display": sidebarIsHidden ? 'flex' : 'none'});
+}
+
+function toggleVakAddons() {
+    $('button[id$="-vak-action"]').each(function() {
+        const button = $(this);
+        const actionIsHidden = button.css('display') === 'none';
+        button.css({"display": actionIsHidden ? 'block' : 'none'});
+
+    })
 }
