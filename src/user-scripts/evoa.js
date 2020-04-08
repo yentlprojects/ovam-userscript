@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         EVOA
+// @name         EVOA-local
 // @namespace    http://tampermonkey.net/
 // @version      0.15
 // @description  Kennisgevingsdossier specific actions
