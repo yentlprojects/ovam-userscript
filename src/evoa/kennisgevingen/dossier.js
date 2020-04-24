@@ -1,6 +1,6 @@
 /* globals $ */
-/* globals waitForElementOnceById,
-           waitForElementsOnce,
+/* globals waitForElementsOnce,
+           waitForElementOnceById,
            createMockDataTransfer,
            addMockAttachment,
            getDateFormattedForInput,
@@ -48,7 +48,7 @@ function fillInDossier(save = true) {
             .then(() => fillInVak12(save))
             .then(() => fillInVak13(save))
             .then(() => fillInVak14(save))
-            // .then(() => fillInVak15(save))
+            .then(() => fillInVak15(save))
             .then(() => fillInVak16(save))
             .then(() => fillInVak3(save));
     console.log('Dossier filled in.');
@@ -98,7 +98,7 @@ const vakken = {
     12: {id: 'vak-12-benaming-materiaal', action: fillInVak12},
     13: {id: 'vak-13-fysische-eigenschappen', action: fillInVak13},
     14: {id: 'vak-14-identificatie-afvalstoffen', action: fillInVak14},
-    15: {id: 'vak-15-betrokken-landen', action: null}, // TODO: re-enable when logic works
+    15: {id: 'vak-15-betrokken-landen', action: fillInVak15},
     16: {id: 'vak-16-douanekantoren', action: fillInVak16}
 };
 
@@ -373,7 +373,7 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Uitvoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'NL' : 'BE');
         setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
-        vak.find('.vl-modal-dialog__buttons button:contains("Opslaan")').click();
+        (await waitForElementOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
     }
 
     // Select Invoerland (if none present)
@@ -381,7 +381,7 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Invoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'BE' : 'NL');
         setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
-        vak.find('.vl-modal-dialog__buttons button:contains("Opslaan")').click();
+        (await waitForElementOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
     }
 
     // Set attachment

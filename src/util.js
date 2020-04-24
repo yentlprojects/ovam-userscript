@@ -1,6 +1,30 @@
 /* globals $, waitForKeyElements */
 
-function waitForElementsOnce(selector) {
+function waitForElementsOnce(selector, parentNode) {
+    const timeout = 100, maxAttempts = 30; // TODO: make these optionally configurable
+    return new Promise((resolve, reject) => {
+        let attempt = 0;
+        let intervalId = setInterval(() => {
+            const jNode = parentNode ? parentNode.find(selector) : $(selector);
+            if (jNode.length > 0) {
+                clearInterval(intervalId);
+                resolve(jNode);
+            }
+
+            if (++attempt > maxAttempts) {
+                clearInterval(intervalId);
+                reject(`Failed to find element for selector ${selector} after ${maxAttempts} times ${timeout} ms.`);
+            }
+        }, timeout);
+    });
+}
+
+function waitForElementOnceById(id) {
+    return waitForElementsOnce(`#${id}`);
+}
+
+/** @deprecated **/
+function waitForElementsOnceOld(selector) {
     return new Promise((resolve, reject) => {
        const jNode = $(selector);
         if (jNode.length > 0) {
@@ -14,8 +38,9 @@ function waitForElementsOnce(selector) {
     });
 }
 
-function waitForElementOnceById(id) {
-    return waitForElementsOnce(`#${id}`);
+/** @deprecated **/
+function waitForElementOnceByIdOld(id) {
+    return waitForElementsOnceOld(`#${id}`);
 }
 
 function createMockDataTransfer(fileName = 'programmatically_created.txt', fileBits = ['foobar']) {
