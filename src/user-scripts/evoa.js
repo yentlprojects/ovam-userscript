@@ -6,7 +6,8 @@
 // @author       Yentl Storms
 // @match        https://*.evoa.ovam.be/*
 // @match        https://localhost:9000/*
-// @grant        none
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require      http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js

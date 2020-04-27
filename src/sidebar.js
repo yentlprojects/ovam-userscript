@@ -1,10 +1,11 @@
 /* globals $ */
 /* globals shortcut */
 /* globals waitForElementsOnce */
+/* globals GM_getValue, GM_setValue */
 
 function initSidebar() {
     const sidebar = $('<div id="evoa-util-sidebar"/>').css({
-        "display": "none",
+        "display": GM_getValue("evoa_actions_shown", false) ? 'flex' : 'none',
         "flex-direction": "column",
         "position": "fixed",
         "top": "75%",
@@ -32,21 +33,21 @@ function createSidebarButton(id, text, onClick) {
 
 function createKeyboardShortcutHandler(sidebar) {
     shortcut.add('Ctrl+Shift+U', function() {
-        toggleSidebar(sidebar);
-        toggleVakAddons();
+        const showActions = !GM_getValue("evoa_actions_shown", false);
+        GM_setValue("evoa_actions_shown", showActions);
+        toggleSidebar(sidebar, showActions);
+        toggleVakAddons(showActions);
     });
 }
 
-function toggleSidebar(sidebar) {
-    const sidebarIsHidden = sidebar.css('display') === 'none';
-    sidebar.css({"display": sidebarIsHidden ? 'flex' : 'none'});
+function toggleSidebar(sidebar, show) {
+    sidebar.css({"display": show ? 'flex' : 'none'});
 }
 
-function toggleVakAddons() {
+function toggleVakAddons(show) {
     $('button[id$="-vak-action"]').each(function() {
         const button = $(this);
-        const actionIsHidden = button.css('display') === 'none';
-        button.css({"display": actionIsHidden ? 'block' : 'none'});
+        button.css({"display": show ? 'block' : 'none'});
 
     })
 }
