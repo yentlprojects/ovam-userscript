@@ -9,6 +9,7 @@
            sendNativeClick,
            selectOptionByValue
 */
+/* globals GM_getValue */
 
 const dossierActions = [
     {
@@ -33,9 +34,9 @@ function markAsCorrectVerricht() {
 }
 
 function fillInDossier(save = true) {
-    console.log('Filling in dossier...');
     // Saving Vak4 triggers changes in Vak3, possibly resulting in concurrency issues when saved concurrently => move them apart to reduce risk (hacky '=.=)
-    fillInVak4(save)
+    Promise.resolve(console.warn('Filling in dossier...'))
+            .then(() => fillInVak4(save))
             .then(() => fillInVak1(save))
             .then(() => fillInVak2(save))
             .then(() => fillInVak5(save))
@@ -50,8 +51,8 @@ function fillInDossier(save = true) {
             .then(() => fillInVak14(save))
             .then(() => fillInVak15(save))
             .then(() => fillInVak16(save))
-            .then(() => fillInVak3(save));
-    console.log('Dossier filled in.');
+            .then(() => fillInVak3(save))
+            .then(() => console.warn('Dossier filled in.'));
 }
 
 function registerVakAddons() {
@@ -68,7 +69,7 @@ function createVakAddonButton({id, action}) {
         click: action,
     });
     button.css({
-        "display": "none",
+        "display": GM_getValue("evoa_actions_shown", false) ? 'block' : 'none',
         "position": "absolute",
         "overflow": "hidden",
         "top": 0,
@@ -373,7 +374,7 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Uitvoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'NL' : 'BE');
         setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
-        (await waitForElementOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
+        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
     }
 
     // Select Invoerland (if none present)
@@ -381,7 +382,7 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Invoerland selecteren")').click();
         selectOptionByValue(vak.find('select#land'), isInvoerDossier ? 'BE' : 'NL');
         setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
-        (await waitForElementOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
+        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
     }
 
     // Set attachment
