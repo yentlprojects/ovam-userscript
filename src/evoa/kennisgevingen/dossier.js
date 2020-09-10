@@ -319,7 +319,7 @@ async function fillInVak11(save = true) {
     vak.find('button:contains("Toevoegen")').eq(1).click();
 
     // Set attachment
-    addMockAttachment(vak.find('input#vak11Upload').get(0));
+    addMockAttachment(vak.find('input#vak11VerwerkingsprocesDocumentenUpload').get(0));
 
     if (save) {
         vak.find('button[type=submit]').click();
