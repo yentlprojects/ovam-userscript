@@ -124,7 +124,7 @@ async function fillInVak1(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
         selectContactPersoonBtns.eq(0).click();
     }
 
@@ -158,7 +158,7 @@ async function fillInVak2(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
         selectContactPersoonBtns.eq(0).click();
     }
 
@@ -292,7 +292,7 @@ async function fillInVak10(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
         selectContactPersoonBtns.eq(0).click();
     }
 
