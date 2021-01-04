@@ -367,7 +367,9 @@ async function fillInVak14(save = true) {
 
 async function fillInVak15(save = true) {
     const vak = await waitForElementOnceById(vakken[15].id);
-    const isInvoerDossier = $('dt:contains("Dossiertype")').next().text() === 'Invoer';
+    const dossierType = ($('dt:contains("Dossiertype")').next().find('select#dossierTypeSelect').val() || $('dt:contains("Dossiertype")').next().text()).toUpperCase();
+    const isInvoerDossier = dossierType === 'INVOER';
+    // const isHoefijzerDossier = dossierType === 'HOEFIJZER'; // TODO: hoefijzer dossier werkt nog niet.
 
     // Select Uitvoerland (if none present)
     if (!vak.find('table td:contains("Uitvoer")').length) {
