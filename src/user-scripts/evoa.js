@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EVOA
 // @namespace    http://tampermonkey.net/
-// @version      0.19
+// @version      0.20
 // @description  Kennisgevingsdossier specific actions
 // @author       Yentl Storms
 // @match        https://*.evoa.ovam.be/*
