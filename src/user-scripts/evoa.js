@@ -11,9 +11,9 @@
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require      http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/MVP8/src/util.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/MVP8/src/sidebar.js
-// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/MVP8/src/evoa/kennisgevingen/dossier.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/util.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/sidebar.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/evoa/kennisgevingen/dossier.js
 // ==/UserScript==
 
 /* globals $ */
