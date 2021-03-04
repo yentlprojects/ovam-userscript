@@ -43,10 +43,17 @@ function waitForElementOnceByIdOld(id) {
     return waitForElementsOnceOld(`#${id}`);
 }
 
-function createMockDataTransfer(fileName = 'programmatically_created.txt', fileBits = ['foobar']) {
+async function sleep(milliseconds) {
+    return new Promise(r => setTimeout(r, milliseconds));
+}
+
+function createMockDataTransfer(fileName = 'programmatically_created', fileExtension = '.txt', fileBits = ['foobar']) {
+    if (fileName === 'programmatically_created') {
+        fileName += new Date().getTime();
+    }
     const dataTransfer = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
             new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
-    dataTransfer.items.add(new File(fileBits, fileName));
+    dataTransfer.items.add(new File(fileBits, fileName + fileExtension));
     return dataTransfer;
 }
 
@@ -62,7 +69,7 @@ function getDateFormattedForInput(date, offsetDays = 0) {
 }
 
 /**
- * Work-around for React-controlled inputs to properly trigger events and store updates to happen.
+ * Work-around for React-controlled inputs to properly trigger events and redux store updates to happen.
  * */
 function setNativeInputValue(element, value) {
     const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;

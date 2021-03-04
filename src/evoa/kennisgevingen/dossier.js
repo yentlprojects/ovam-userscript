@@ -1,6 +1,7 @@
 /* globals $ */
 /* globals waitForElementsOnce,
            waitForElementOnceById,
+           sleep,
            createMockDataTransfer,
            addMockAttachment,
            getDateFormattedForInput,
@@ -33,26 +34,28 @@ function markAsCorrectVerricht() {
     $('[id=correct-verklaren-pill]').has('input:not(:checked)').click();
 }
 
-function fillInDossier(save = true) {
+async function fillInDossier(save = true) {
     // Saving Vak4 triggers changes in Vak3, possibly resulting in concurrency issues when saved concurrently => move them apart to reduce risk (hacky '=.=)
-    Promise.resolve(console.warn('Filling in dossier...'))
-            .then(() => fillInVak4(save))
-            .then(() => fillInVak1(save))
-            .then(() => fillInVak2(save))
-            .then(() => fillInVak5(save))
-            .then(() => fillInVak6(save))
-            .then(() => fillInVak7(save))
-            .then(() => fillInVak8(save))
-            .then(() => fillInVak9(save))
-            .then(() => fillInVak10(save))
-            .then(() => fillInVak11(save))
-            .then(() => fillInVak12(save))
-            .then(() => fillInVak13(save))
-            .then(() => fillInVak14(save))
-            .then(() => fillInVak15(save))
-            .then(() => fillInVak16(save))
-            .then(() => fillInVak3(save))
-            .then(() => console.warn('Dossier filled in.'));
+    console.warn('Filling in dossier...');
+    try { await fillInBankgarantie(save); } catch(e) { console.error('Filling in bankgarantie failed.', e) }
+    try { await fillInVak4(save); } catch(e) { console.error('Filling in vak4 failed.', e) }
+    try { await fillInVak1(save); } catch(e) { console.error('Filling in vak1 failed.', e) }
+    try { await fillInVak2(save); } catch(e) { console.error('Filling in vak2 failed.', e) }
+    try { await fillInVak5(save); } catch(e) { console.error('Filling in vak5 failed.', e) }
+    try { await fillInVak6(save); } catch(e) { console.error('Filling in vak6 failed.', e) }
+    try { await fillInVak7(save); } catch(e) { console.error('Filling in vak7 failed.', e) }
+    try { await fillInVak8(save); } catch(e) { console.error('Filling in vak8 failed.', e) }
+    try { await fillInVak9(save); } catch(e) { console.error('Filling in vak9 failed.', e) }
+    try { await fillInVak10(save); } catch(e) { console.error('Filling in vak10 failed.', e) }
+    try { await fillInVak11(save); } catch(e) { console.error('Filling in vak11 failed.', e) }
+    try { await fillInVak12(save); } catch(e) { console.error('Filling in vak12 failed.', e) }
+    try { await fillInVak13(save); } catch(e) { console.error('Filling in vak13 failed.', e) }
+    try { await fillInVak14(save); } catch(e) { console.error('Filling in vak14 failed.', e) }
+    try { await fillInVak15(save); } catch(e) { console.error('Filling in vak15 failed.', e) }
+    try { await fillInVak16(save); } catch(e) { console.error('Filling in vak16 failed.', e) }
+    try { await fillInVak17(save); } catch(e) { console.error('Filling in vak17 failed.', e) }
+    try { await fillInVak3(save); } catch(e) { console.error('Filling in vak3 failed.', e) }
+    console.warn('Dossier filled in.');
 }
 
 function registerVakAddons() {
@@ -85,6 +88,7 @@ function createVakAddonButton({id, action}) {
 }
 
 const vakken = {
+    'bankgarantie': {id: 'bankgarantie-onderdeel-formulier', action: fillInBankgarantie},
     1: {id: 'vak-1-exporteur', action: fillInVak1},
     2: {id: 'vak-2-importeur', action: fillInVak2},
     3: {id: 'vak-3-type-aanvraag', action: fillInVak3},
@@ -100,8 +104,22 @@ const vakken = {
     13: {id: 'vak-13-fysische-eigenschappen', action: fillInVak13},
     14: {id: 'vak-14-identificatie-afvalstoffen', action: fillInVak14},
     15: {id: 'vak-15-betrokken-landen', action: fillInVak15},
-    16: {id: 'vak-16-douanekantoren', action: fillInVak16}
+    16: {id: 'vak-16-douanekantoren', action: fillInVak16},
+    17: {id: 'vak-17-verklaring', action: fillInVak17}
 };
+
+async function fillInBankgarantie(save = true) {
+    const onderdeel = await waitForElementOnceById(vakken['bankgarantie'].id);
+
+    const waarborgInput = onderdeel.find('input#bankgarantie-onderdeel-documenten');
+    if (waarborgInput.length) {
+        addMockAttachment(waarborgInput.get(0));
+    }
+
+    if (save) {
+        onderdeel.find('button[type="submit"]').click();
+    }
+}
 
 async function fillInVak1(save = true) {
     const vak = await waitForElementOnceById(vakken[1].id);
@@ -124,13 +142,17 @@ async function fillInVak1(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
-        selectContactPersoonBtns.eq(0).click();
+        try {
+            const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+            selectContactPersoonBtns.eq(0).click();
+        } catch (e) {
+            console.warn('No known contact found... making new mock contact.');
+            await createNewContact();
+        }
     }
 
     // Set attachment
     addMockAttachment(vak.find('input#vak1ContractDocumentenUpload').get(0));
-    addMockAttachment(vak.find('input#vak1WaarborgDocumentenUpload').get(0));
 
     if (save) {
         vak.find('button[type="submit"]').click();
@@ -158,8 +180,13 @@ async function fillInVak2(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
-        selectContactPersoonBtns.eq(0).click();
+        try {
+            const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+            selectContactPersoonBtns.eq(0).click();
+        } catch (e) {
+            console.warn('No known contact found... making new mock contact.');
+            await createNewContact();
+        }
     }
 
     if (save) {
@@ -250,7 +277,7 @@ async function fillInVak9(save = true) {
     const vak = await waitForElementOnceById(vakken[9].id);
 
     // Add producent
-    vak.find('button:contains("Producent toevoegen")').click()
+    vak.find('button:contains("Producent toevoegen")').click();
     const producentToevoegenModal = await waitForElementOnceById('vak9-wizard');
     selectOptionByValue(producentToevoegenModal.find('select[name="landCode"]'), 'BE');
     producentToevoegenModal.find('button[type="submit"]').click();
@@ -261,12 +288,19 @@ async function fillInVak9(save = true) {
     const selectContactPersoonBtns = await waitForElementsOnce('#vak9-wizard .contact-persoon-selectie-box button:contains("Selecteer")');
     selectContactPersoonBtns.eq(0).click();
 
-    (await waitForElementsOnce('#vak9-wizard button:contains("Producent toevoegen")')).click();
+    const locatieInput = (await waitForElementsOnce('textarea[name="locatie"]', vak)).get(0);
+    setNativeInputValue(locatieInput, 'Mock locatie');
+
+    const procesInput = (await waitForElementsOnce('textarea[name="proces"]', vak)).get(0);
+    setNativeInputValue(procesInput, 'Mock proces');
+
+    (await waitForElementsOnce('#vak9-wizard #producent-wizard button[type="submit"]')).click();
 
     // Set attachment
     addMockAttachment(vak.find('input#vak9ProductieProcesDocumentenUpload').get(0));
 
     if (save) {
+        await sleep(500); // Producenten lijken na het "toevoegen" even niet in de state te zitten, waardoor ze bij save niet mee naar backend gestuurd worden :/
         vak.find('button[type="submit"]').click();
     }
 }
@@ -292,15 +326,25 @@ async function fillInVak10(save = true) {
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
-        const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
-        selectContactPersoonBtns.eq(0).click();
+        try {
+            const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+            selectContactPersoonBtns.eq(0).click();
+        } catch (e) {
+            console.warn('Geen bestaande contactpersonen gevonden... Nieuw mock contact wordt aangemaakt.');
+            await createNewContact();
+        }
     }
 
     // Select typeInrichting
     vak.find('label').has('input[value="VERWIJDERING"]').click();
 
+    // Set feitelijke locatie
+    const procesInput = (await waitForElementsOnce('textarea[name="feitelijkeLocatie"]', vak)).get(0);
+    setNativeInputValue(procesInput, 'Mock feitelijke locatie');
+
     // Set attachment
-    addMockAttachment(vak.find('input#vak10Inrichting').get(0));
+    addMockAttachment(vak.find('input#vak10InrichtingBewijsVanVergunningDocumentenUpload').get(0));
+    addMockAttachment(vak.find('input#vak10InrichtingPafVergunningDocumentenUpload').get(0));
 
     if (save) {
         vak.find('button[type=submit]').click();
@@ -311,11 +355,15 @@ async function fillInVak11(save = true) {
     const vak = await waitForElementOnceById(vakken[11].id);
 
     // Select D-Code
-    selectOptionByValue(vak.find('select#selectedVerwijderingshandeling'), 'D01');
+    let select = vak.find('select#selectedVerwijderingshandeling');
+    let options = select.find('option:not(:disabled)');
+    selectOptionByValue(select, options.eq(0).val());
     vak.find('button:contains("Toevoegen")').eq(0).click();
 
     // Select R-Code
-    selectOptionByValue(vak.find('select#selectedNuttigeToepassing'), 'R01');
+    select = vak.find('select#selectedNuttigeToepassing');
+    options = select.find('option:not(:disabled)');
+    selectOptionByValue(select, options.eq(0).val());
     vak.find('button:contains("Toevoegen")').eq(1).click();
 
     // Set attachment
@@ -357,7 +405,9 @@ async function fillInVak14(save = true) {
     vak.find('label').has('input[name="vnKlasseCodeNietVermeld"]:not(:checked)').click();
     vak.find('label').has('input[name="vnNummerCodeNietVermeld"]:not(:checked)').click();
 
-    selectOptionByValue(vak.find('select#afvalstoffenEural'), '010101');
+    let selectAfvalstoffen = vak.find('select#afvalstoffenEural');
+    let options = selectAfvalstoffen.find('option:not(:disabled)');
+    selectOptionByValue(selectAfvalstoffen, options.eq(1).val()); // Select 2nd non-disabled option
     vak.find('button:contains("Toevoegen")').eq(0).click();
 
     if (save) {
@@ -398,9 +448,43 @@ async function fillInVak15(save = true) {
 async function fillInVak16(save = true) {
     const vak = await waitForElementOnceById(vakken[16].id);
 
-    vak.find('label.vl-checkbox').click();
+    // Clicking directly on input element does not properly update state1
+    vak.find('label.vl-checkbox:has(input#EG:not(:checked))').click();
 
     if (save) {
         vak.find('button[type="submit"]').click();
     }
+}
+
+async function fillInVak17(save = true) {
+    const vak = await waitForElementOnceById(vakken[17].id);
+
+    if (vak.find('p:contains("De info in dit vak ziet u na het indienen van het dossier.")').length) {
+        console.warn('Skipping vak17 as it is in a read-only state.');
+        return;
+    }
+
+    setNativeInputValue(vak.find('input#vak17-kennisgever-naam').get(0), 'Mock kennisgever naam');
+    setNativeInputValue(vak.find('input#kennisgeverDatum').get(0), getDateFormattedForInput(new Date(), -3));
+
+    setNativeInputValue(vak.find('input#vak17-producent-naam').get(0), 'Mock producent naam');
+    setNativeInputValue(vak.find('input#vak17-producent-datum').get(0), getDateFormattedForInput(new Date(), -2));
+
+    if (save) {
+        vak.find('button[type="submit"]').click();
+    }
+}
+
+async function createNewContact() {
+    (await waitForElementsOnce('button:contains("Nieuwe contactpersoon aanmaken")')).click();
+
+    const modal = await waitForElementsOnce('.contact-selectie-modal:contains("Nieuwe contactpersoon aanmaken")');
+    setNativeInputValue((await waitForElementsOnce('input#contactPersoon', modal)).get(0), 'Mock contact naam');
+    setNativeInputValue((await waitForElementsOnce('input#telefoonnummer', modal)).get(0), '0498/765432');
+    setNativeInputValue((await waitForElementsOnce('input#email', modal)).get(0), 'mockemail@mockprovider.mock');
+    setNativeInputValue((await waitForElementsOnce('input#faxnummer', modal)).get(0), '0412/345678');
+
+    modal.find('button[type="submit"]').click();
+
+    await sleep(600); // Create contact call immediately closes the modal, but state is updated async later
 }
