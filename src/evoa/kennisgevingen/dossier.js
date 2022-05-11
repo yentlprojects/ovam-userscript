@@ -125,7 +125,7 @@ async function fillInVak1(save = true) {
     const vak = await waitForElementOnceById(vakken[1].id);
 
     // Select bedrijf
-    const selectKennisgeverLink = vak.find('a:contains("Selecteer kennisgever")');
+    const selectKennisgeverLink = vak.find('button:contains("Selecteer kennisgever")');
     if (selectKennisgeverLink.length) {
         sendNativeClick(selectKennisgeverLink);
 
@@ -135,10 +135,11 @@ async function fillInVak1(save = true) {
 
         const selectBedrijfBtns = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een kennisgever") .bedrijf-selectie-box button:contains("Selecteer")');
         selectBedrijfBtns.eq(0).click();
+        await sleep(500);
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('a:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
@@ -163,7 +164,7 @@ async function fillInVak2(save = true) {
     const vak = await waitForElementOnceById(vakken[2].id);
 
     // Select bedrijf
-    const selectOntvangerLink = vak.find('a:contains("Selecteer ontvanger")');
+    const selectOntvangerLink = vak.find('button:contains("Selecteer ontvanger")');
     if (selectOntvangerLink.length) {
         sendNativeClick(selectOntvangerLink);
 
@@ -173,6 +174,7 @@ async function fillInVak2(save = true) {
 
         const selectBedrijfBtns = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een ontvanger") .bedrijf-selectie-box button:contains("Selecteer")');
         selectBedrijfBtns.eq(0).click();
+        await sleep(500);
     }
 
     // Select contactPersoon
@@ -309,7 +311,7 @@ async function fillInVak10(save = true) {
     const vak = await waitForElementOnceById(vakken[10].id);
 
     // Select bedrijf
-    const selectInrichtingLink = vak.find('a:contains("Selecteer inrichting")');
+    const selectInrichtingLink = vak.find('button:contains("Selecteer inrichting")');
     if (selectInrichtingLink.length) {
         sendNativeClick(selectInrichtingLink);
 
@@ -426,7 +428,6 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Uitvoerland selecteren")').click();
         selectOptionByValue(vak.find('select[data-id="land"]'), isInvoerDossier ? 'NL' : 'BE');
         setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
-        await sleep(500); // Laden van de bevoegde autoriteiten
         (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
     }
 
@@ -435,7 +436,6 @@ async function fillInVak15(save = true) {
         vak.find('button:contains("Invoerland selecteren")').click();
         selectOptionByValue(vak.find('select[data-id="land"]'), isInvoerDossier ? 'BE' : 'NL');
         setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
-        await sleep(500); // Laden van de bevoegde autoriteiten
         (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
     }
 
