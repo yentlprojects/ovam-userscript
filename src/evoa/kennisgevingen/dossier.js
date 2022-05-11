@@ -178,7 +178,7 @@ async function fillInVak2(save = true) {
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('a:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
@@ -324,7 +324,7 @@ async function fillInVak10(save = true) {
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('a:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
