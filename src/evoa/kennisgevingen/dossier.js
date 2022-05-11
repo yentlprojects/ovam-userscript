@@ -422,7 +422,7 @@ async function fillInVak15(save = true) {
     // const isHoefijzerDossier = dossierType === 'HOEFIJZER'; // TODO: hoefijzer dossier werkt nog niet.
 
     // Select Uitvoerland (if none present)
-    if (!vak.find('table td:contains("Uitvoer")').length) {
+   if (!vak.find('table td:contains("Uitvoer")').length) {
         vak.find('button:contains("Uitvoerland selecteren")').click();
         selectOptionByValue(vak.find('select[data-id="land"]'), isInvoerDossier ? 'Nederland' : 'België');
         setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
