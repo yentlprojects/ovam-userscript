@@ -88,6 +88,7 @@ function createVakAddonButton({id, action}) {
 }
 
 const vakken = {
+    'kost': {id: 'dossierkost-form', action: fillInkost},
     'bankgarantie': {id: 'bankgarantie-onderdeel-formulier', action: fillInBankgarantie},
     1: {id: 'vak-1-exporteur', action: fillInVak1},
     2: {id: 'vak-2-importeur', action: fillInVak2},
@@ -107,6 +108,41 @@ const vakken = {
     16: {id: 'vak-16-douanekantoren', action: fillInVak16},
     17: {id: 'vak-17-verklaring', action: fillInVak17}
 };
+
+async function fillInKost(save = true) {
+    const onderdeel = await waitForElementOnceById(vakken['kost'].id);
+
+    // Select bedrijf
+    const selectKennisgeverLink = onderdeel.find('button:contains("Selecteer factuuradres")');
+    if (selectKennisgeverLink.length) {
+        sendNativeClick(selectKennisgeverLink);
+
+        const kiesKennisgeverModal = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een factuuradres")');
+        selectOptionByValue(kiesKennisgeverModal.find('select[name="landCode"]'), 'BE');
+        kiesKennisgeverModal.find('button[type="submit"]').click();
+
+        const selectBedrijfBtns = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een factuuradres") .bedrijf-selectie-box button:contains("Selecteer")');
+        selectBedrijfBtns.eq(0).click();
+    }
+
+    // Select contactPersoon
+    const selectContactPersoonLink = await waitForElementsOnce('button:contains("Selecteer contactpersoon")', onderdeel);
+    if (selectContactPersoonLink.length) {
+        sendNativeClick(selectContactPersoonLink);
+
+        try {
+            const selectContactPersoonBtns = await waitForElementsOnce('.contact-selectie-modal:contains("Kies een contactpersoon") .contact-persoon-selectie-box button:contains("Selecteer")');
+            selectContactPersoonBtns.eq(0).click();
+        } catch (e) {
+            console.warn('No known contact found... making new mock contact.');
+            await createNewContact();
+        }
+    }
+
+    if (save) {
+        onderdeel.find('button[type="submit"]').click();
+    }
+}
 
 async function fillInBankgarantie(save = true) {
     const onderdeel = await waitForElementOnceById(vakken['bankgarantie'].id);
@@ -135,11 +171,10 @@ async function fillInVak1(save = true) {
 
         const selectBedrijfBtns = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een kennisgever") .bedrijf-selectie-box button:contains("Selecteer")');
         selectBedrijfBtns.eq(0).click();
-        await sleep(500);
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = await waitForElementsOnce('button:contains("Selecteer contactpersoon")', vak);
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
@@ -174,11 +209,10 @@ async function fillInVak2(save = true) {
 
         const selectBedrijfBtns = await waitForElementsOnce('#bedrijf-selectie:contains("Kies een ontvanger") .bedrijf-selectie-box button:contains("Selecteer")');
         selectBedrijfBtns.eq(0).click();
-        await sleep(500);
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = await waitForElementsOnce('button:contains("Selecteer contactpersoon")', vak);
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
@@ -199,7 +233,7 @@ async function fillInVak2(save = true) {
 async function fillInVak3(save = true) {
     const vak = await waitForElementOnceById(vakken[3].id);
 
-    vak.find('label').has('input[value="VERWIJDERING"]').click();
+    vak.find('label').has('input[value="NUTTIGE_TOEPASSING"]').click();
 
     if (save) {
         vak.find('button[type="submit"]').click();
@@ -324,7 +358,7 @@ async function fillInVak10(save = true) {
     }
 
     // Select contactPersoon
-    const selectContactPersoonLink = vak.find('button:contains("Selecteer contactpersoon")');
+    const selectContactPersoonLink = await waitForElementsOnce('button:contains("Selecteer contactpersoon")', vak);
     if (selectContactPersoonLink.length) {
         sendNativeClick(selectContactPersoonLink);
 
