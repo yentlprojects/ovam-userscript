@@ -89,7 +89,7 @@ function createVakAddonButton({id, action}) {
 }
 
 const vakken = {
-    'kost': {id: 'dossierkost-form', action: fillInKost},
+    'kost': {id: 'dossierkost-onderdeel', action: fillInKost},
     'bankgarantie': {id: 'bankgarantie-onderdeel-formulier', action: fillInBankgarantie},
     1: {id: 'vak-1-exporteur', action: fillInVak1},
     2: {id: 'vak-2-importeur', action: fillInVak2},
