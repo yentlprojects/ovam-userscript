@@ -37,6 +37,7 @@ function markAsCorrectVerricht() {
 async function fillInDossier(save = true) {
     // Saving Vak4 triggers changes in Vak3, possibly resulting in concurrency issues when saved concurrently => move them apart to reduce risk (hacky '=.=)
     console.warn('Filling in dossier...');
+    try { await fillInKost(save); } catch(e) { console.error('Filling in kost failed.', e) }
     try { await fillInBankgarantie(save); } catch(e) { console.error('Filling in bankgarantie failed.', e) }
     try { await fillInVak4(save); } catch(e) { console.error('Filling in vak4 failed.', e) }
     try { await fillInVak1(save); } catch(e) { console.error('Filling in vak1 failed.', e) }
