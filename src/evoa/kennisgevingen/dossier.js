@@ -234,7 +234,8 @@ async function fillInVak2(save = true) {
 async function fillInVak3(save = true) {
     const vak = await waitForElementOnceById(vakken[3].id);
 
-    vak.find('label').has('input[value="NUTTIGE_TOEPASSING"]').click();
+    vak.find('label').has('input[name="typeHandeling"][value="NUTTIGE_TOEPASSING"]').click();
+    vak.find('label').has('input[name="goedgekeurdeNuttigeToepassing"][value="false"]').click();
 
     if (save) {
         vak.find('button[type="submit"]').click();
@@ -452,27 +453,62 @@ async function fillInVak14(save = true) {
     }
 }
 
+async function fillInVak15Uitvoerland(vak, isInvoerDossier) {
+    // Select Uitvoerland (if none present)
+    if (!vak.find('table td:contains("Uitvoer")').length) {
+        vak.find('button:contains("Uitvoerland selecteren")').click();
+        let btn = vak.find('button#land');
+        if (isInvoerDossier) {
+            vak.find('button#land').click();
+            selectOptionByValue($('select[data-id="land"]'), 'NL');
+        }
+        setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
+        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
+    } else {
+        // Update grensovergang exit if uitvoerland present
+        vak.find('button:contains("Uitvoerland aanpassen")').click();
+        let inputEl = vak.find('input#exit').get(0);
+        if (!inputEl.value) {
+            setNativeInputValue(inputEl, isInvoerDossier ? 'Hazeldonk' : 'Meer');
+            (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
+        } else {
+            (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Annuleren")')).click();
+        }
+    }
+}
+
+async function fillInVak15Invoerland(vak, isInvoerDossier) {
+    // Select Invoerland (if none present)
+    if (!vak.find('table td:contains("Invoer")').length) {
+        vak.find('button:contains("Invoerland selecteren")').click();
+        let btn = vak.find('button#land');
+        if (!isInvoerDossier) {
+            vak.find('button#land').click();
+            selectOptionByValue($('select[data-id="land"]'), 'NL');
+        }
+        setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
+        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
+    } else {
+        // Update grensovergang entry if invoerland present
+        vak.find('button:contains("Invoerland aanpassen")').click();
+        let inputEl = vak.find('input#entry').get(0);
+        if (!inputEl.value) {
+            setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
+            (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Opslaan"):enabled')).click();
+        } else {
+            (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Annuleren")')).click();
+        }
+    }
+}
+
 async function fillInVak15(save = true) {
     const vak = await waitForElementOnceById(vakken[15].id);
     const dossierType = ($('dt:contains("Dossiertype")').next().find('select#dossierTypeSelect').val() || $('dt:contains("Dossiertype")').next().text()).toUpperCase();
     const isInvoerDossier = dossierType === 'INVOER';
     // const isHoefijzerDossier = dossierType === 'HOEFIJZER'; // TODO: hoefijzer dossier werkt nog niet.
 
-    // Select Uitvoerland (if none present)
-   if (!vak.find('table td:contains("Uitvoer")').length) {
-        vak.find('button:contains("Uitvoerland selecteren")').click();
-        selectOptionByValue(vak.find('select[data-id="land"]'), isInvoerDossier ? 'NL' : 'BE');
-        setNativeInputValue(vak.find('input#exit').get(0), isInvoerDossier ? 'Hazeldonk' : 'Meer');
-        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
-    }
-
-    // Select Invoerland (if none present)
-    if (!vak.find('table td:contains("Invoer")').length) {
-        vak.find('button:contains("Invoerland selecteren")').click();
-        selectOptionByValue(vak.find('select[data-id="land"]'), isInvoerDossier ? 'BE' : 'NL');
-        setNativeInputValue(vak.find('input#entry').get(0), isInvoerDossier ? 'Meer' : 'Hazeldonk');
-        (await waitForElementsOnce('.vl-modal-dialog__buttons button:contains("Toevoegen"):enabled')).click();
-    }
+    await fillInVak15Uitvoerland(vak, isInvoerDossier);
+    await fillInVak15Invoerland(vak, isInvoerDossier);
 
     // Set attachment
     addMockAttachment(vak.find('input#vak15RoutebeschrijvingUpload').get(0));
