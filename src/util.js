@@ -1,7 +1,7 @@
 /* globals $, waitForKeyElements */
 
 function waitForElementsOnce(selector, parentNode) {
-    const timeout = 100, maxAttempts = 30; // TODO: make these optionally configurable
+    const timeout = 100, maxAttempts = 50;
     return new Promise((resolve, reject) => {
         let attempt = 0;
         let intervalId = setInterval(() => {
