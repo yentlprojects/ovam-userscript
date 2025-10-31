@@ -13,7 +13,7 @@ function waitForElementsOnce(selector, parentNode) {
 
             if (++attempt > maxAttempts) {
                 clearInterval(intervalId);
-                // reject(`Failed to find element for selector ${selector} after ${maxAttempts} times ${timeout} ms.`);
+                /** reject(`Failed to find element for selector ${selector} after ${maxAttempts} times ${timeout} ms.`); **/
             }
         }, timeout);
     });
