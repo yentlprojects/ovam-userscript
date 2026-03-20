@@ -538,11 +538,13 @@ async function fillInVak17(save = true) {
         return;
     }
 
-    setNativeInputValue(vak.find('input#vak17-kennisgever-naam').get(0), 'Mock kennisgever naam');
-    setNativeInputValue(vak.find('input#kennisgeverDatum').get(0), getDateFormattedForInput(new Date(), -3));
+    const verklaringKennisgever = vak.find('.vak17-verklaring-element').first();
+    setNativeInputValue(verklaringKennisgever.find('input[name="naam"]').get(0), 'Mock kennisgever naam');
+    setNativeInputValue(verklaringKennisgever.find('input[name="datum"]').get(0), getDateFormattedForInput(new Date(), -3));
 
-    setNativeInputValue(vak.find('input#vak17-producent-naam').get(0), 'Mock producent naam');
-    setNativeInputValue(vak.find('input#vak17-producent-datum').get(0), getDateFormattedForInput(new Date(), -2));
+    const verklaringProducent = vak.find('.vak17-verklaring-element').last();
+    setNativeInputValue(verklaringProducent.find('input[name="naam"]').get(0), 'Mock producent naam');
+    setNativeInputValue(verklaringProducent.find('input[name="datum"]').get(0), getDateFormattedForInput(new Date(), -2));
 
     if (save) {
         vak.find('button[type="submit"]').click();
