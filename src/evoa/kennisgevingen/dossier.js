@@ -278,7 +278,7 @@ async function fillInVak6(save = true) {
 async function fillInVak7(save = true) {
     const vak = await waitForElementOnceById(vakken[7].id);
 
-    selectOptionByValue(vak.find('select[name="verpakkingsWijze"]'), '1');
+    selectOptionByValue(vak.find('select[name="selectedVerpakkingsWijze"]'), '1');
 
     if (save) {
         vak.find('button[type="submit"]').click();
