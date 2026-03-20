@@ -289,10 +289,6 @@ async function fillInVak7(save = true) {
 async function fillInVak8(save = true) {
     const vak = await waitForElementOnceById(vakken[8].id);
 
-    // Select vervoerswijze
-    selectOptionByValue(vak.find('select[name="selectedVervoerswijze"]'), 'ROAD');
-    vak.find('button:contains("Toevoegen")').click();
-
     // Add vervoerder
     vak.find('button:contains("Vervoerder toevoegen")').click()
     const vervoerderToevoegenModal = await waitForElementOnceById('vak8-wizard');
@@ -304,6 +300,9 @@ async function fillInVak8(save = true) {
 
     const selectContactPersoonBtns = await waitForElementsOnce('#vak8-wizard .contact-persoon-selectie-box button:contains("Selecteer")');
     selectContactPersoonBtns.eq(0).click();
+
+    const selectVervoerswijze = await waitForElementsOnce('#vak8-wizard #wizard-vervoerswijze');
+    selectOptionByValue(selectVervoerswijze, 'ROAD');
 
     (await waitForElementsOnce('#vak8-wizard button:contains("Vervoerder toevoegen")')).click();
 
