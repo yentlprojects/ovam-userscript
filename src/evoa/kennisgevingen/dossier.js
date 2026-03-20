@@ -547,7 +547,7 @@ async function fillInVak17(save = true) {
     setNativeInputValue(verklaringProducent.find('input[name="datum"]').get(0), getDateFormattedForInput(new Date(), -2));
 
     if (save) {
-        vak.find('button[type="submit"]').click();
+        setTimeout(() => vak.find('button[type="submit"]').click(), 50);
     }
 }
 
