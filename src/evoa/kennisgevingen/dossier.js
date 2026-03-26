@@ -380,6 +380,9 @@ async function fillInVak10(save = true) {
     const procesInput = (await waitForElementsOnce('textarea[name="feitelijkeLocatie"]', vak)).get(0);
     setNativeInputValue(procesInput, 'Mock feitelijke locatie');
 
+    // Select inrichtingHandelingType
+    vak.find('label').has('input[value="GEEN_VOORLOPIGE_HANDELING"]').click();
+
     // Set attachment
     addMockAttachment(vak.find('input#vak10InrichtingBewijsVanVergunningDocumentenUpload').get(0));
     addMockAttachment(vak.find('input#vak10InrichtingPafVergunningDocumentenUpload').get(0));
