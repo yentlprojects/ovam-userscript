@@ -1,5 +1,9 @@
 /* globals $, waitForKeyElements */
 
+class PdfTemplate {
+  static RAW_CONTENT = ["%PDF-1.0\n\r1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n\r2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n\r3 0 obj<</Type/Page/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/MediaBox[0 0 300 300]/Contents 5 0 R>>endobj\n\r4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\n\r5 0 obj<</Length 44>>stream\n\rBT /F1 24 Tf 50 200 Td (Inhoud) Tj ET\n\rendstream\n\rendobj\n\rxref\n\r0 6\n\r0000000000 65535 f \n\r0000000009 00000 n \n\r0000000052 00000 n \n\r0000000101 00000 n \n\r0000000216 00000 n \n\r0000000275 00000 n \n\rtrailer<</Root 1 0 R/Size 6>>\n\rstartxref\n\r365\n\r%%EOF"];
+}
+
 function waitForElementsOnce(selector, parentNode) {
     const timeout = 100, maxAttempts = 50;
     return new Promise((resolve, reject) => {
@@ -48,7 +52,7 @@ async function sleep(milliseconds) {
     return new Promise(r => setTimeout(r, milliseconds));
 }
 
-function createMockDataTransfer(fileName = 'programmatically_created', fileExtension = '.pdf', fileBits = ['foobar']) {
+function createMockDataTransfer(fileName = 'programmatically_created', fileExtension = '.pdf', fileBits = PdfTemplate.RAW_CONTENT) {
     if (fileName === 'programmatically_created') {
         fileName += new Date().getTime();
     }
