@@ -48,7 +48,7 @@ async function sleep(milliseconds) {
     return new Promise(r => setTimeout(r, milliseconds));
 }
 
-function createMockDataTransfer(fileName = 'programmatically_created', fileExtension = '.txt', fileBits = ['foobar']) {
+function createMockDataTransfer(fileName = 'programmatically_created', fileExtension = '.pdf', fileBits = ['foobar']) {
     if (fileName === 'programmatically_created') {
         fileName += new Date().getTime();
     }
