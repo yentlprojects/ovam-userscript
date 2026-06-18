@@ -396,16 +396,24 @@ async function fillInVak11(save = true) {
     const vak = await waitForElementOnceById(vakken[11].id);
 
     // Select D-Code
-    let select = vak.find('select#selectedVerwijderingshandeling');
-    let options = select.find('option:not(:disabled)');
-    selectOptionByValue(select, options.eq(0).val());
-    vak.find('button:contains("Toevoegen")').eq(0).click();
+    // let select = vak.find('select#selectedVerwijderingshandeling');
+    // let options = select.find('option:not(:disabled)');
+    // selectOptionByValue(select, options.eq(0).val());
+    // vak.find('button:contains("Toevoegen")').eq(0).click();
 
     // Select R-Code
-    select = vak.find('select#selectedNuttigeToepassing');
-    options = select.find('option:not(:disabled)');
+    let select = vak.find('select#selectedNuttigeToepassing');
+    let options = select.find('option:not(:disabled)');
     selectOptionByValue(select, options.eq(0).val());
     vak.find('button:contains("Toevoegen")').eq(1).click();
+
+    // Gebruikte technologie
+    let textarea = vak.find('textarea').get(0);
+    setNativeInputValue(textarea, 'Custom tech');
+
+    // Reden uitvoer
+    textarea = vak.find('textarea').get(1);
+    setNativeInputValue(textarea, 'Specifieke reden');
 
     // Set attachment
     addMockAttachment(vak.find('input#vak11VerwerkingsprocesDocumentenUpload').get(0));
