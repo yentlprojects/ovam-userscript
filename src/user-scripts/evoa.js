@@ -15,12 +15,13 @@
 // @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/util.js
 // @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/sidebar.js
 // @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/evoa/kennisgevingen/dossier.js
+// @require      https://raw.githubusercontent.com/yentlprojects/ovam-userscript/master/src/evoa/kennisgevingen/contactpersoon.js
 // ==/UserScript==
 
 /* globals $ */
 /* globals waitForKeyElements */
 /* globals initSidebar, createSidebarButton */
-/* globals dossierActions, registerVakAddons */
+/* globals dossierActions, registerVakAddons, registerNieuweContactPersoonAddon */
 
 (function() {
     'use strict';
@@ -40,6 +41,7 @@
             case /\/kennisgevingen\/.+?\/dossier/.test(location.pathname):
                 actions = dossierActions;
                 registerVakAddons();
+                registerNieuweContactPersoonAddon();
                 break;
             default:
                 actions = [];
