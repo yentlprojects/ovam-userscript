@@ -111,7 +111,7 @@ const vakken = {
 };
 
 async function fillInKost(save = true) {
-    const onderdeel = await waitForElementOnceById(vakken['kost'].id);
+    const onderdeel = await waitForElementOnceById(vakken["kost"].id);
 
     // Select bedrijf
     const selectKennisgeverLink = onderdeel.find('button:contains("Selecteer factuuradres")');
@@ -146,7 +146,7 @@ async function fillInKost(save = true) {
 }
 
 async function fillInBankgarantie(save = true) {
-    const onderdeel = await waitForElementOnceById(vakken['bankgarantie'].id);
+    const onderdeel = await waitForElementOnceById(vakken["bankgarantie"].id);
 
     const waarborgInput = onderdeel.find('input#bankgarantie-onderdeel-documenten');
     if (waarborgInput.length) {
@@ -338,7 +338,7 @@ async function fillInVak9(save = true) {
     const locatieOverbrengingRadio = vak.find('input#locatieOverbrenging-manueel').get(0);
     locatieOverbrengingRadio.click();
     const locatieOverbrengingAdresInput = (await waitForElementsOnce('input#locatieOverbrenging-manueel[type="text"]', vak)).get(0);
-    setNativeInputValue(locatieOverbrengingAdresInput, 'Custom adres');       
+    setNativeInputValue(locatieOverbrengingAdresInput, 'Custom adres');
 
     // Set attachment
     addMockAttachment(vak.find('input#vak9ProductieProcesDocumentenUpload').get(0));
